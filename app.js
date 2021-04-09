@@ -8,6 +8,7 @@ const hbs          = require('hbs');
 const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
+const routes       = require('./configs/routes');
 
 
 // WHEN INTRODUCING USERS DO THIS:
@@ -43,11 +44,11 @@ app.use(cookieParser());
 
 // Express View engine setup
 
-app.use(require('node-sass-middleware')({
-  src:  path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  sourceMap: true
-}));
+// app.use(require('node-sass-middleware')({
+//   src:  path.join(__dirname, 'public'),
+//   dest: path.join(__dirname, 'public'),
+//   sourceMap: true
+// }));
       
 
 app.set('views', path.join(__dirname, 'views'));
@@ -66,13 +67,21 @@ app.locals.title = 'Express - Generated with IronGenerator';
 
 
 // ADD CORS SETTINGS HERE TO ALLOW CROSS-ORIGIN INTERACTION:
+const cors = require('cors');
 
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000']
+  })
+)
 
 
 // ROUTES MIDDLEWARE STARTS HERE:
+app.use('/', routes);
+app.use('/api', routes);
 
-const index = require('./routes/index');
-app.use('/', index);
-
+// const index = require('./routes/index');
+// app.use('/', index);
 
 module.exports = app;
